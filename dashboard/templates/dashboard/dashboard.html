@@ -3,3 +3,12 @@
 
 {% block extra_css %}
 {% endblock %}
+
+{% block content %}
+	{{ files.path }}
+	<ul>
+	{% for file in files.children %}
+		<li>{{ file.is_dir }} {{ file.filename }}</li>
+	{% endfor %}
+	</ul>
+{% endblock %}
