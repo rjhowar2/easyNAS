@@ -5,10 +5,16 @@
 {% endblock %}
 
 {% block content %}
-	{{ files.path }}
+	<span class="glyphicon glyphicon-folder-open">&nbsp;{{ files.path }}</span>
 	<ul>
 	{% for file in files.children %}
-		<li>{{ file.is_dir }} {{ file.filename }}</li>
+		<li>
+			{% if file.is_dir %}
+				<span class="glyphicon glyphicon-folder-close">&nbsp;{{ file.filename }}</span>
+			{% else %}
+				<span class="glyphicon glyphicon-file">&nbsp;{{ file.filename }}</span>
+			{% endif %}
+		</li>
 	{% endfor %}
 	</ul>
 {% endblock %}
