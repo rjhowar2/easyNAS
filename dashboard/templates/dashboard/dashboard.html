@@ -2,19 +2,22 @@
 {% load staticfiles %}
 
 {% block extra_css %}
+	<link href="{% static 'dashboard/css/dashboard.css' %}" rel="stylesheet">
 {% endblock %}
 
 {% block content %}
-	<span class="glyphicon glyphicon-folder-open">&nbsp;{{ files.path }}</span>
-	<ul>
-	{% for file in files.children %}
-		<li>
-			{% if file.is_dir %}
-				<span class="glyphicon glyphicon-folder-close">&nbsp;{{ file.filename }}</span>
-			{% else %}
-				<span class="glyphicon glyphicon-file">&nbsp;{{ file.filename }}</span>
-			{% endif %}
-		</li>
-	{% endfor %}
-	</ul>
+	<div id="dashboard_container">
+		<span class="glyphicon glyphicon-folder-open">{{ files.path }}</span>
+		<ul>
+		{% for file in files.children %}
+			<li>
+				{% if file.is_dir %}
+					<span class="glyphicon glyphicon-folder-close">{{ file.filename }}</span>
+				{% else %}
+					<span class="glyphicon glyphicon-file">{{ file.filename }}</span>
+				{% endif %}
+			</li>
+		{% endfor %}
+		</ul>
+	</div>
 {% endblock %}
