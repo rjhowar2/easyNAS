@@ -3,6 +3,7 @@ from django.views.generic import TemplateView
 from django.conf import settings
 
 import requests
+import urllib
 
 class DashboardView(TemplateView):
 
@@ -10,17 +11,17 @@ class DashboardView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(TemplateView, self).get_context_data(**kwargs)
-        context['files'] = get_files_from_server()
+        context['data'] = get_files_from_server()
         return context
 
-def get_files_from_server(root=None):
-	if root == None:
-		root = "/"
+def get_files_from_server(path=None):
+	if path == None:
+		path = "/"
 
-	url = settings.FILE_SERVER_URL
-	data = {"root": root}
-	
-	response = requests.post(url, json=data)
+	args = {"path": path}
+	url = "%s?%s" % (settings.FILE_SERVER_URL, urllib.urlencode(args))
 
-	return response.json()['files']
+	response = requests.get(url)
+
+	return response.json()
 

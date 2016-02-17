@@ -9,7 +9,7 @@
 	<div id="dashboard_container">
 		<span class="glyphicon glyphicon-folder-open">{{ files.path }}</span>
 		<ul>
-		{% for file in files.children %}
+		{% for file in data.files.children %}
 			<li>
 				{% if file.is_dir %}
 					<span class="glyphicon glyphicon-folder-close">{{ file.filename }}</span>
