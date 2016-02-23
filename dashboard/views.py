@@ -14,12 +14,16 @@ class DashboardView(TemplateView):
         context['data'] = get_files_from_server()
         return context
 
-def get_files_from_server(path=None):
-	if path == None:
-		path = "/"
+def get_files_from_server(path=""):
+	base_dir_url = settings.FILE_SERVER_URLS['BASE_DIR']
 
-	args = {"path": path}
-	url = "%s?%s" % (settings.FILE_SERVER_URL, urllib.urlencode(args))
+	try:
+		base_dir = requests.get(base_dir_url).json()['base_directory']
+	except Exception, e:
+		base_dir = ''
+
+	args = {"path": base_dir}
+	url = "%s?%s" % (settings.FILE_SERVER_URLS['CONTENTS'], urllib.urlencode(args))
 
 	response = requests.get(url)
 
