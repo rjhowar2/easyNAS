@@ -11,7 +11,7 @@ class DashboardView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(TemplateView, self).get_context_data(**kwargs)
-        context['data'] = get_files_from_server()
+        context['folder_contents'] = get_files_from_server()
         return context
 
 def get_files_from_server(path=""):

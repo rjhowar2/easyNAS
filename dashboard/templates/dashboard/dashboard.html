@@ -7,17 +7,12 @@
 
 {% block content %}
 	<div id="dashboard_container">
-		<span class="glyphicon glyphicon-folder-open">{{ files.path }}</span>
-		<ul>
-		{% for file in data.files.children %}
-			<li>
-				{% if file.is_dir %}
-					<span class="glyphicon glyphicon-folder-close">{{ file.filename }}</span>
-				{% else %}
-					<span class="glyphicon glyphicon-file">{{ file.filename }}</span>
-				{% endif %}
-			</li>
-		{% endfor %}
-		</ul>
+		{% with folder_contents as folder_contents %}
+			{% include "dashboard/folder_contents.html" %}
+		{% endwith %}
 	</div>
+{% endblock %}
+
+{% block extra_js %}
+	<script type="text/javascript" src="{% static 'dashboard/js/dashboard.js' %}"></script>
 {% endblock %}
