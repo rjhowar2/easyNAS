@@ -1,5 +1,6 @@
 {% extends 'easyNAS/base.html' %}
 {% load staticfiles %}
+{% load common_tags %}
 
 {% block extra_css %}
 	<link href="{% static 'dashboard/css/dashboard.css' %}" rel="stylesheet">
@@ -14,5 +15,9 @@
 {% endblock %}
 
 {% block extra_js %}
+	<script type="text/javascript">
+		var api_urls = '{{ api_urls|jsonify }}';
+		var folder_contents_url = '{% url "folder_contents" %}'
+	</script>
 	<script type="text/javascript" src="{% static 'dashboard/js/dashboard.js' %}"></script>
 {% endblock %}
