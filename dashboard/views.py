@@ -8,8 +8,6 @@ import json
 
 class DashboardView(TemplateView):
 
-    #template_name = "dashboard/dashboard.html"
-
     def get_template_names(self):
     	if self.request.is_ajax():
         	return ["dashboard/folder_contents.html"]
@@ -20,7 +18,10 @@ class DashboardView(TemplateView):
     	folder = self.request.GET.get('path','')
 
         context = super(TemplateView, self).get_context_data(**kwargs)
+        folder_contents = get_files_from_server(folder)
+        folders = _get_folders(folder_contents["files"]["parent"])
         context['folder_contents'] = get_files_from_server(folder)
+        context['folders'] = folders
         context['api_urls'] = settings.FILE_SERVER_URLS
         
         return context
@@ -29,7 +30,18 @@ def get_files_from_server(folder):
 	args = {"path": folder}
 	url = "%s?%s" % (settings.FILE_SERVER_URLS['CONTENTS'], urllib.urlencode(args))
 
-	print "url - %s" % url
 	response = requests.get(url)
 	return response.json()
+
+def _get_folders(full_path):
+    folders = full_path.lstrip("/").split("/")
+    paths = []
+
+    p = ""
+    for folder in folders:
+        p = "%s%s/" % (p, folder)
+        paths.append((p,folder))
+
+    return paths
+
 
