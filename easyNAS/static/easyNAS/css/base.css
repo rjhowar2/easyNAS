@@ -1,3 +1,7 @@
 .navbar .glyphicon:before {
 	margin-right: 5px;
 }
+
+#base_container {
+	padding-top: 70px;
+}

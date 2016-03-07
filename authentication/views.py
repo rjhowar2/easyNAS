@@ -1,5 +1,5 @@
 from django.views.generic import View, TemplateView
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
 
@@ -33,6 +33,10 @@ class LoginView(TemplateView):
 			context["error_message="] = LOGIN_ERRORS[kwargs["error_code"]]
 
 		return context
+
+def logout_view(request):
+	logout(request)
+    # Redirect to a success page.
 
 LOGIN_ERRORS = {
 	200: "This accounthas been disabled. Please contact the administrator.",

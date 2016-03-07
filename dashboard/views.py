@@ -8,12 +8,7 @@ import json
 
 class DashboardView(TemplateView):
 
-    def get_template_names(self):
-    	if self.request.is_ajax():
-        	return ["dashboard/folder_contents.html"]
-        else:
-        	return ["dashboard/dashboard.html"]
-
+    template_name  = "dashboard/dashboard.html"
     def get_context_data(self, **kwargs):
     	folder = self.request.GET.get('path','')
 
@@ -34,12 +29,12 @@ def get_files_from_server(folder):
 	return response.json()
 
 def _get_folders(full_path):
-    folders = full_path.lstrip("/").split("/")
+    folders = full_path.lstrip("/").split("/") if full_path else []
     paths = []
 
     p = ""
     for folder in folders:
-        p = "%s%s/" % (p, folder)
+        p = "%s/%s" % (p, folder)
         paths.append((p,folder))
 
     return paths

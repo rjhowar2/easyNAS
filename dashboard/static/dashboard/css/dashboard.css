@@ -2,10 +2,11 @@
 	margin-right: 5px;
 }
 
-#dashboard_container ul {
-	list-style: none;
-}
-
 #dashboard_container .folder span{
 	cursor: pointer;
 }
+
+#dashboard_menu{
+	margin-bottom: 10px;
+}
+

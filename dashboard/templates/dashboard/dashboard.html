@@ -3,21 +3,112 @@
 {% load common_tags %}
 
 {% block extra_css %}
-	<link href="{% static 'dashboard/css/dashboard.css' %}" rel="stylesheet">
+<link href="{% static 'dashboard/css/dashboard.css' %}" rel="stylesheet">
 {% endblock %}
 
 {% block content %}
-	<div id="dashboard_container">
-		{% with folder_contents as folder_contents %}
-			{% include "dashboard/folder_contents.html" %}
-		{% endwith %}
+<div id="dashboard_container">
+{% with folder_contents.files.parent as parent %}
+	<ol class="breadcrumb">
+		<li><a href='{% url "dashboard_home" %}' data-toggle="tooltip" title="All Files" class="glyphicon glyphicon-folder-open"></a></li>
+		{% for path, folder in folders %}
+			{% if not forloop.last %}
+				<li><a href='{% url "folder_contents" %}?path={{ path|urlencode }}'>{{folder}}</a></li>
+			{% else %}
+				<li><b>{{ folder }}</b></li>
+			{% endif %}
+		{% endfor %}
+	</ol>
+	<div id="dashboard_menu">
+		<button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#upload_modal">
+  		<span class="glyphicon glyphicon-cloud-upload"></span> Upload
+		</button>
+		<button type="button" class="btn btn-default btn-sm">
+  		<span class="glyphicon glyphicon-cloud-download"></span> Download
+		</button>
+		<button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#new_folder_modal">
+  		<span class="glyphicon glyphicon-plus"></span> New
+		</button>
+		<button type="button" class="btn btn-default btn-sm">
+  		<span class="glyphicon glyphicon-edit" data-toggle="tooltip" title="Click to edit"></span>
+		</button>
 	</div>
+	<table id="folder_contents" class="table table-hover table-condensed table-responsive">
+	{% for file in folder_contents.files.children %}
+		<tr>
+		{% if file.is_dir %}
+			{% with parent|add:"/"|add:file.filename as folder_path %}
+			<td class="folder">
+				<a href='{% url "folder_contents" %}?path={{ folder_path|urlencode }}'>
+					<span class="glyphicon glyphicon-folder-close">{{ file.filename }}</span>
+				</a>
+			</td>
+			{% endwith %}
+		{% else %}
+			<td class="file"><span class="glyphicon glyphicon-file">{{ file.filename }}</span></td>
+		{% endif %}
+		</tr>
+	{% endfor %}
+	</table>
+</div>
+<!-- Upload Modal -->
+<div id="upload_modal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Upload File</h4>
+        {{ parent }}
+      </div>
+      <div class="modal-body">
+        <form method="post" enctype="multipart/form-data">
+        	<div class="form-group">
+        		<label for="input_file">File input</label>
+          	<input type="file" name="myfile" id="input_file"/>
+          </div>
+          <input type="submit" name="submit" class="btn btn-default" value="Upload" />
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- New Folder Modal -->
+<div id="new_folder_modal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Create New Folder</h4>
+        {{ parent }}
+      </div>
+      <div class="modal-body">
+        <form class="horizontal-form" method="post">
+        	<div class="form-group">
+        		<label for="input_folder_name">Name</label>
+          	<input type="text" name="folder_name" id="input_folder_name"/>
+          </div>
+          <input type="submit" name="submit" class="btn btn-default" value="Create Folder" />
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+{% endwith %} <!-- end with | parent -->
 {% endblock %}
 
 {% block extra_js %}
-	<script type="text/javascript">
-		var api_urls = '{{ api_urls|jsonify }}';
-		var folder_contents_url = '{% url "folder_contents" %}'
-	</script>
-	<script type="text/javascript" src="{% static 'dashboard/js/dashboard.js' %}"></script>
+<script type="text/javascript">
+	var api_urls = '{{ api_urls|jsonify }}';
+	var folder_contents_url = '{% url "folder_contents" %}'
+</script>
+<script type="text/javascript" src="{% static 'dashboard/js/dashboard.js' %}"></script>
 {% endblock %}
