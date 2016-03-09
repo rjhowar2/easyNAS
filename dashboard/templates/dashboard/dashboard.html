@@ -20,16 +20,16 @@
 		{% endfor %}
 	</ol>
 	<div id="dashboard_menu">
-		<button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#upload_modal">
+		<button id="btn_upload" type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#upload_modal">
   		<span class="glyphicon glyphicon-cloud-upload"></span> Upload
 		</button>
-		<button type="button" class="btn btn-default btn-sm">
+		<button disabled="disabled" id="btn_download" type="button" class="btn btn-default btn-sm">
   		<span class="glyphicon glyphicon-cloud-download"></span> Download
 		</button>
-		<button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#new_folder_modal">
+		<button id="btn_new" type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#new_folder_modal">
   		<span class="glyphicon glyphicon-plus"></span> New
 		</button>
-		<button type="button" class="btn btn-default btn-sm">
+		<button disabled="disabled" id="btn_edit" type="button" class="btn btn-default btn-sm">
   		<span class="glyphicon glyphicon-edit" data-toggle="tooltip" title="Click to edit"></span>
 		</button>
 	</div>
@@ -39,13 +39,14 @@
 		{% if file.is_dir %}
 			{% with parent|add:"/"|add:file.filename as folder_path %}
 			<td class="folder">
+        <input type="checkbox">
 				<a href='{% url "folder_contents" %}?path={{ folder_path|urlencode }}'>
 					<span class="glyphicon glyphicon-folder-close">{{ file.filename }}</span>
 				</a>
 			</td>
 			{% endwith %}
 		{% else %}
-			<td class="file"><span class="glyphicon glyphicon-file">{{ file.filename }}</span></td>
+			<td class="file"><input type="checkbox"><span class="glyphicon glyphicon-file">{{ file.filename }}</span></td>
 		{% endif %}
 		</tr>
 	{% endfor %}
@@ -62,10 +63,11 @@
         {{ parent }}
       </div>
       <div class="modal-body">
-        <form method="post" enctype="multipart/form-data">
+        <form action="{{ api_urls.FILES }}" method="post" enctype="multipart/form-data">
         	<div class="form-group">
         		<label for="input_file">File input</label>
-          	<input type="file" name="myfile" id="input_file"/>
+          	<input type="file" name="file" id="input_file"/>
+            <input type="hidden" name="folder" value="{{ parent }}">
           </div>
           <input type="submit" name="submit" class="btn btn-default" value="Upload" />
         </form>
