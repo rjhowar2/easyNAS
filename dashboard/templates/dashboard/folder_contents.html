@@ -1,0 +1,18 @@
+<table id="folder_contents" class="table table-hover table-condensed table-responsive">
+{% for file in folder_contents.files.children %}
+	<tr>
+	{% if file.is_dir %}
+		{% with parent|add:"/"|add:file.filename as folder_path %}
+		<td class="folder">
+      <input type="checkbox">
+			<a href='{% url "folder_contents" %}?path={{ folder_path|urlencode }}'>
+				<span class="glyphicon glyphicon-folder-close">{{ file.filename }}</span>
+			</a>
+		</td>
+		{% endwith %}
+	{% else %}
+		<td class="file"><input type="checkbox"><span class="glyphicon glyphicon-file">{{ file.filename }}</span></td>
+	{% endif %}
+	</tr>
+{% endfor %}
+</table>
