@@ -1,4 +1,4 @@
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.views.generic import TemplateView
 from django.conf import settings
 
@@ -8,18 +8,35 @@ import json
 
 class DashboardView(TemplateView):
 
-    template_name  = "dashboard/dashboard.html"
+    def get_template_names(self):
+        if self.request.is_ajax():
+            return ["dashboard/folder_contents.html"]
+        else:
+            return ["dashboard/dashboard.html"]
+
     def get_context_data(self, **kwargs):
     	folder = self.request.GET.get('path','')
+        folder_contents = get_files_from_server(folder)
+        parent_folder = folder_contents["files"]["parent"]
+        folders = _get_folders(parent_folder)
 
         context = super(TemplateView, self).get_context_data(**kwargs)
-        folder_contents = get_files_from_server(folder)
-        folders = _get_folders(folder_contents["files"]["parent"])
         context['folder_contents'] = get_files_from_server(folder)
         context['folders'] = folders
-        context['api_urls'] = settings.FILE_SERVER_URLS
+        context['parent'] = parent_folder
         
         return context
+
+def upload_file(request):
+    folder = request.POST.get("folder")
+    files = {'file': request.FILES['file']}
+    upload_url = settings.FILE_SERVER_URLS["FILES"]
+
+    r = requests.post(upload_url, files=files, data={'folder': folder})
+
+    response = r.json()
+
+    return JsonResponse(response)
 
 def get_files_from_server(folder):
 	args = {"path": folder}

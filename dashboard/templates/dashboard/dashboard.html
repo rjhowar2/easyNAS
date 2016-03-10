@@ -8,12 +8,11 @@
 
 {% block content %}
 <div id="dashboard_container">
-{% with folder_contents.files.parent as parent %}
 	<ol class="breadcrumb">
 		<li><a href='{% url "dashboard_home" %}' data-toggle="tooltip" title="All Files" class="glyphicon glyphicon-folder-open"></a></li>
 		{% for path, folder in folders %}
 			{% if not forloop.last %}
-				<li><a href='{% url "folder_contents" %}?path={{ path|urlencode }}'>{{folder}}</a></li>
+				<li><a href='{% url "dashboard_home" %}?path={{ path|urlencode }}'>{{folder}}</a></li>
 			{% else %}
 				<li><b>{{ folder }}</b></li>
 			{% endif %}
@@ -33,24 +32,9 @@
   		<span class="glyphicon glyphicon-edit" data-toggle="tooltip" title="Click to edit"></span>
 		</button>
 	</div>
-	<table id="folder_contents" class="table table-hover table-condensed table-responsive">
-	{% for file in folder_contents.files.children %}
-		<tr>
-		{% if file.is_dir %}
-			{% with parent|add:"/"|add:file.filename as folder_path %}
-			<td class="folder">
-        <input type="checkbox">
-				<a href='{% url "folder_contents" %}?path={{ folder_path|urlencode }}'>
-					<span class="glyphicon glyphicon-folder-close">{{ file.filename }}</span>
-				</a>
-			</td>
-			{% endwith %}
-		{% else %}
-			<td class="file"><input type="checkbox"><span class="glyphicon glyphicon-file">{{ file.filename }}</span></td>
-		{% endif %}
-		</tr>
-	{% endfor %}
-	</table>
+  <div id="folder_contents_container">
+  {% include "dashboard/folder_contents.html" %}
+  </div>
 </div>
 <!-- Upload Modal -->
 <div id="upload_modal" class="modal fade" role="dialog">
@@ -63,7 +47,8 @@
         {{ parent }}
       </div>
       <div class="modal-body">
-        <form action="{{ api_urls.FILES }}" method="post" enctype="multipart/form-data">
+        <form id="upload_form" action="{% url 'upload_file' %}" method="post" enctype="multipart/form-data">
+          {% csrf_token %}
         	<div class="form-group">
         		<label for="input_file">File input</label>
           	<input type="file" name="file" id="input_file"/>
@@ -73,6 +58,7 @@
         </form>
       </div>
       <div class="modal-footer">
+        <div class="alert"></div>
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
       </div>
     </div>
@@ -104,13 +90,11 @@
     </div>
   </div>
 </div>
-{% endwith %} <!-- end with | parent -->
 {% endblock %}
 
 {% block extra_js %}
 <script type="text/javascript">
-	var api_urls = '{{ api_urls|jsonify }}';
-	var folder_contents_url = '{% url "folder_contents" %}'
+	var folder_contents_url = '{% url "folder_contents" %}?path={{ parent|urlencode }}'
 </script>
 <script type="text/javascript" src="{% static 'dashboard/js/dashboard.js' %}"></script>
 {% endblock %}
