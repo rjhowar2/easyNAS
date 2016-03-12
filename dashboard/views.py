@@ -38,6 +38,17 @@ def upload_file(request):
 
     return JsonResponse(response)
 
+def delete_file(request):
+    delete_url = settings.FILE_SERVER_URLS["DELETES"]
+
+    folder = request.POST.get("folder")
+    filename = request.POST.getlist("filename")
+
+    r = requests.post(delete_url, data={'folder': folder, 'filename': filename})
+    response = r.json()
+
+    return JsonResponse(response)
+
 def get_files_from_server(folder):
 	args = {"path": folder}
 	url = "%s?%s" % (settings.FILE_SERVER_URLS['CONTENTS'], urllib.urlencode(args))
