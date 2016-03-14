@@ -80,10 +80,13 @@
         {{ parent }}
       </div>
       <div class="modal-body">
-        <form class="horizontal-form" method="post">
+        <div class="alert response alert-success" style="display: none;"></div>
+        <div class="alert response alert-danger" style="display: none;"></div>
+        <form action="{% url 'new_folder' %}" class="horizontal-form">
+          {% csrf_token %}
         	<div class="form-group">
         		<label for="input_folder_name">Name</label>
-          	<input type="text" name="folder_name" id="input_folder_name"/>
+          	<input type="text" name="name"/>
           </div>
           <input type="submit" name="submit" class="btn btn-default" value="Create Folder" />
         </form>

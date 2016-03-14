@@ -49,6 +49,17 @@ def delete_file(request):
 
     return JsonResponse(response)
 
+def new_folder(request):
+    create_url = settings.FILE_SERVER_URLS["CREATE"]
+
+    folder = request.POST.get("folder")
+    name = request.POST.get("name")
+
+    r = requests.post(create_url, data={'folder': folder, 'name': name})
+    response = r.json()
+
+    return JsonResponse(response)
+
 def get_files_from_server(folder):
 	args = {"path": folder}
 	url = "%s?%s" % (settings.FILE_SERVER_URLS['CONTENTS'], urllib.urlencode(args))

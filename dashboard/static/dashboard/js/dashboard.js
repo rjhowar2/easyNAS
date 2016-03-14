@@ -67,6 +67,23 @@ $(document).ready(function(){
             data: form_data
         }, 'json');
    	});
+
+   	$("#new_folder_modal form").submit(function(event){
+   		event.preventDefault();
+   		var $form = $(this);
+
+   		$.ajax({
+            url: $form.attr('action'),
+            type: 'POST',
+            success: completeHandler = function(data) {
+            	operation_complete(data, $("#new_folder_modal"))
+            },
+            error: errorHandler = function(data) {
+            	console.log(data);
+            },
+            data: $form.serialize()
+        }, 'json');
+   	});
 });
 
 function operation_complete(data, $modal){
