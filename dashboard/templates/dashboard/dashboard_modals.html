@@ -1,0 +1,143 @@
+<!-- Upload Modal -->
+<div id="upload_modal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Upload File</h4>
+        {{ parent }}
+      </div>
+      <div class="modal-body">
+        <div class="alert response alert-success" style="display: none;"></div>
+        <div class="alert response alert-danger" style="display: none;"></div>
+        <form action="{% url 'upload_file' %}" method="post" enctype="multipart/form-data">
+          {% csrf_token %}
+        	<div class="form-group">
+        		<label for="input_file">File input</label>
+          	<input type="file" name="file" id="input_file"/>
+            <input type="hidden" name="folder" value="{{ parent }}">
+          </div>
+          <input type="submit" name="submit" class="btn btn-default" value="Upload" />
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Download Modal -->
+<div id="download_modal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Download</h4>
+        {{ parent }}
+      </div>
+      <div class="modal-body">
+        <div class="alert alert-warning">
+          <p>Please confirm that you would like to download the following</p>
+          <ul></ul>
+        </div>
+        <div class="alert alert-success" style="display: none;"></div>
+        <div class="alert alert-danger" style="display: none;"></div>
+        <form action="{% url 'download_file' %}">
+          <input type="submit" name="submit" class="btn btn-default" value="Download File(s)" />
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- New Folder Modal -->
+<div id="new_folder_modal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Create New Folder</h4>
+        {{ parent }}
+      </div>
+      <div class="modal-body">
+        <div class="alert response alert-success" style="display: none;"></div>
+        <div class="alert response alert-danger" style="display: none;"></div>
+        <form action="{% url 'new_folder' %}" class="horizontal-form">
+          {% csrf_token %}
+        	<div class="form-group">
+        		<label for="input_folder_name">Name</label>
+          	<input type="text" name="name"/>
+          </div>
+          <input type="submit" name="submit" class="btn btn-default" value="Create Folder" />
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Delete Modal -->
+<div id="delete_modal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Delete</h4>
+        {{ parent }}
+      </div>
+      <div class="modal-body">
+        <div class="alert alert-warning">
+          <p>Please confirm that you would like to delete the following</p>
+          <ul></ul>
+        </div>
+        <div class="alert alert-success" style="display: none;"></div>
+        <div class="alert alert-danger" style="display: none;"></div>
+        <form action="{% url 'delete_file' %}">
+          <input type="submit" name="submit" class="btn btn-default" value="Delete Files" />
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Edit Modal -->
+<div id="edit_modal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Edit</h4>
+      </div>
+      <div class="modal-body">
+        <div class="alert alert-success" style="display: none;"></div>
+        <div class="alert alert-danger" style="display: none;"></div>
+        <form class="horizontal-form">
+          {% csrf_token %}
+          <input type="hidden" name="source" />
+          <div class="form-group">
+            <label for="input_folder_name">New Name</label>
+            <input type="text" name="destination"/>
+          </div>
+          <input type="submit" name="submit" class="btn btn-default" value="Edit" />
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
