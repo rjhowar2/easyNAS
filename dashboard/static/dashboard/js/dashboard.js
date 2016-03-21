@@ -25,6 +25,19 @@ $(document).ready(function(){
 		$("#delete_modal .alert-warning").show();
 	});
 
+	$("#btn_download").on("click", function(){
+		add_selected($("#download_modal .alert-warning ul"));
+		$("#download_modal .alert-warning").show();
+	});
+
+	$("#btn_edit").on("click", function(){
+		//change hidden input val to source
+		var val = checked_items().val()
+		$("#edit_modal").find("input[name=source]").val(val);
+		$("#edit_modal").find("input[name=destination]").val(val);
+		//move source to text field
+	});
+
 	//----------  Modal form handlers --------------------
 
 	$("#upload_modal form").submit(function(event){
@@ -83,6 +96,18 @@ $(document).ready(function(){
             },
             data: $form.serialize()
         }, 'json');
+   	});
+
+   	$("#download_modal form").submit(function(event){
+   		event.preventDefault();
+   		var $contents_form = $("#folder_contents form");
+
+   		$contents_form.attr('action', $(this).attr('action'))
+
+   		$contents_form.submit();
+   		$("#download_modal .close").trigger("click");
+   		$("#folder_contents :checkbox:checked").trigger("click");
+
    	});
 });
 

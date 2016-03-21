@@ -1,5 +1,6 @@
 from django.http import HttpResponse, JsonResponse
 from django.views.generic import TemplateView
+from django.core.servers.basehttp import FileWrapper
 from django.conf import settings
 
 import requests
@@ -34,9 +35,25 @@ def upload_file(request):
 
     r = requests.post(upload_url, files=files, data={'folder': folder})
 
-    response = r.json()
+    content = r.json()
 
-    return JsonResponse(response)
+    return JsonResponse(content)
+
+def download_file(request):
+    download_url = settings.FILE_SERVER_URLS["DOWNLOADS"]
+
+    folder = request.POST.get("folder")
+    filename = request.POST.getlist("filename")
+
+    r = requests.post(download_url, data={'folder': folder, 'filename': filename}, stream=True)
+    if r.status_code == 200:
+        response = HttpResponse(FileWrapper(r.raw), content_type='application/zip')
+        response['Content-Disposition'] = 'attachment; filename=myfile.zip'
+    else:
+        response = HttpResponse("Sorry an error occured processing your request")
+        response.status_code = 400
+    
+    return response
 
 def delete_file(request):
     delete_url = settings.FILE_SERVER_URLS["DELETES"]
@@ -45,9 +62,9 @@ def delete_file(request):
     filename = request.POST.getlist("filename")
 
     r = requests.post(delete_url, data={'folder': folder, 'filename': filename})
-    response = r.json()
+    content = r.json()
 
-    return JsonResponse(response)
+    return JsonResponse(content)
 
 def new_folder(request):
     create_url = settings.FILE_SERVER_URLS["CREATE"]
@@ -56,9 +73,20 @@ def new_folder(request):
     name = request.POST.get("name")
 
     r = requests.post(create_url, data={'folder': folder, 'name': name})
-    response = r.json()
+    content = r.json()
 
-    return JsonResponse(response)
+    return JsonResponse(content)
+
+def update_file(request):
+    update_url = settings.FILE_SERVER_URLS['FILES']
+
+    source = request.POST.get("source")
+    dest = request.POST.get("destination")
+
+    r = requests.put(update_url, data={'source': source, 'destination': dest})
+    content = r.json()
+
+    return JsonResponse(content)
 
 def get_files_from_server(folder):
 	args = {"path": folder}

@@ -22,7 +22,7 @@
 		<button id="btn_upload" type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#upload_modal">
   		<span class="glyphicon glyphicon-cloud-upload"></span> Upload
 		</button>
-		<button disabled="disabled" id="btn_download" type="button" class="btn btn-default btn-sm">
+		<button disabled="disabled" id="btn_download" type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#download_modal">
   		<span class="glyphicon glyphicon-cloud-download"></span> Download
 		</button>
     <button id="btn_delete" disabled="disabled" type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#delete_modal">
@@ -31,100 +31,16 @@
 		<button id="btn_new" type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#new_folder_modal">
   		<span class="glyphicon glyphicon-plus"></span> New
 		</button>
-		<button disabled="disabled" id="btn_edit" type="button" class="btn btn-default btn-sm">
+		<button disabled="disabled" id="btn_edit" type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#edit_modal">
   		<span class="glyphicon glyphicon-edit" data-toggle="tooltip" title="Click to edit"></span>
 		</button>
 	</div>
   <div id="folder_contents">
   {% include "dashboard/folder_contents.html" %}
   </div>
-</div>
-<!-- Upload Modal -->
-<div id="upload_modal" class="modal fade" role="dialog">
-  <div class="modal-dialog">
-    <!-- Modal content-->
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">Upload File</h4>
-        {{ parent }}
-      </div>
-      <div class="modal-body">
-        <div class="alert response alert-success" style="display: none;"></div>
-        <div class="alert response alert-danger" style="display: none;"></div>
-        <form action="{% url 'upload_file' %}" method="post" enctype="multipart/form-data">
-          {% csrf_token %}
-        	<div class="form-group">
-        		<label for="input_file">File input</label>
-          	<input type="file" name="file" id="input_file"/>
-            <input type="hidden" name="folder" value="{{ parent }}">
-          </div>
-          <input type="submit" name="submit" class="btn btn-default" value="Upload" />
-        </form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-      </div>
-    </div>
-  </div>
+  {% include "dashboard/dashboard_modals.html" %}
 </div>
 
-<!-- New Folder Modal -->
-<div id="new_folder_modal" class="modal fade" role="dialog">
-  <div class="modal-dialog">
-    <!-- Modal content-->
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">Create New Folder</h4>
-        {{ parent }}
-      </div>
-      <div class="modal-body">
-        <div class="alert response alert-success" style="display: none;"></div>
-        <div class="alert response alert-danger" style="display: none;"></div>
-        <form action="{% url 'new_folder' %}" class="horizontal-form">
-          {% csrf_token %}
-        	<div class="form-group">
-        		<label for="input_folder_name">Name</label>
-          	<input type="text" name="name"/>
-          </div>
-          <input type="submit" name="submit" class="btn btn-default" value="Create Folder" />
-        </form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- Delete Modal -->
-<div id="delete_modal" class="modal fade" role="dialog">
-  <div class="modal-dialog">
-    <!-- Modal content-->
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">Delete</h4>
-        {{ parent }}
-      </div>
-      <div class="modal-body">
-        <div class="alert alert-warning">
-          <p>Please confirm that you would like to delete the following</p>
-          <ul></ul>
-        </div>
-        <div class="alert alert-success" style="display: none;"></div>
-        <div class="alert alert-danger" style="display: none;"></div>
-        <form action="{% url 'delete_file' %}">
-          <input type="submit" name="submit" class="btn btn-default" value="Delete Files" />
-        </form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-      </div>
-    </div>
-  </div>
-</div>
 {% endblock %}
 
 {% block extra_js %}

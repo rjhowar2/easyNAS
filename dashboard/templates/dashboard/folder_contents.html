@@ -1,4 +1,4 @@
-<form>
+<form method="post">
 {% csrf_token %}
 <input type="hidden" name="folder" value="{{ parent }}">
 <table class="table table-hover table-condensed table-responsive">
@@ -8,7 +8,7 @@
 		{% with parent|add:"/"|add:file.filename as folder_path %}
 		<td class="folder">
       <input type="checkbox" name="filename" value="{{ file.filename }}">
-			<a href='{% url "folder_contents" %}?path={{ folder_path|urlencode }}'>
+			<a href='{% url "folder_contents" %}?path={{ file.path|urlencode }}'>
 				<span class="glyphicon glyphicon-folder-close">{{ file.filename }}</span>
 			</a>
 		</td>

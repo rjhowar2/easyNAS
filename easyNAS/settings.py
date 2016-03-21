@@ -143,5 +143,7 @@ FILE_SERVER_URLS = {
     'CONTENTS': "%s/directory" % FILE_SERVER_BASE_URL,
     'DELETES': "%s/files/deletes" % FILE_SERVER_BASE_URL,
     'CREATE': "%s/directory/create" % FILE_SERVER_BASE_URL,
+    'DOWNLOADS': "%s/files/downloads" % FILE_SERVER_BASE_URL,
+
 }
 
