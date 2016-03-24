@@ -23,9 +23,6 @@ BASE_DIR = os.path.dirname(os.path.relpath(__file__))
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'uz9cjv8b0i^vpf$lsd&d&nu%-^qn_gmz8-y(osx7c^x$-$sxw!'
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
 ALLOWED_HOSTS = []
 
 
@@ -79,17 +76,6 @@ TEMPLATE_LOADERS = (
 WSGI_APPLICATION = 'easyNAS.wsgi.application'
 
 
-# Database
-# https://docs.djangoproject.com/en/dev/ref/settings/#databases
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
-}
-
-
 # Password validation
 # https://docs.djangoproject.com/en/dev/ref/settings/#auth-password-validators
 
@@ -133,8 +119,12 @@ STATICFILES_DIRS = (
     os.path.join(BASE_DIR, "static"),
 )
 
+<<<<<<< HEAD:easyNAS/settings.py
 #FILE_SERVER_BASE_URL = "http://127.0.0.1:5000/nas_server/api/v1.0"
 FILE_SERVER_BASE_URL = "http://71.57.23.72:5000/nas_server/api/v1.0"
+=======
+FILE_SERVER_BASE_URL = "http://127.0.0.1:5000/nas_server/api/v1.0"
+>>>>>>> 4e2fd3c23f422c34ff650c5402c76c64964c1b8e:easyNAS/settings/common.py
 
 FILE_SERVER_URLS = {
     'BASE_DIR': "%s/directory/root" % FILE_SERVER_BASE_URL,
