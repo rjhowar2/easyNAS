@@ -133,9 +133,8 @@ STATICFILES_DIRS = (
     os.path.join(BASE_DIR, "static"),
 )
 
-FILE_SERVER_BASE_URL = "http://127.0.0.1:5000/nas_server/api/v1.0"
-#FILE_SERVER_BASE_URL = "http://10.0.0.23:5000/nas_server/api/v1.0"
-#FILE_SERVER_BASE_URL = "http://71.57.23.72:5000/nas_server/api/v1.0"
+#FILE_SERVER_BASE_URL = "http://127.0.0.1:5000/nas_server/api/v1.0"
+FILE_SERVER_BASE_URL = "http://71.57.23.72:5000/nas_server/api/v1.0"
 
 FILE_SERVER_URLS = {
     'BASE_DIR': "%s/directory/root" % FILE_SERVER_BASE_URL,
