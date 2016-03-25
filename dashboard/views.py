@@ -16,7 +16,7 @@ class DashboardView(TemplateView):
             return ["dashboard/dashboard.html"]
 
     def get_context_data(self, **kwargs):
-    	folder = self.request.GET.get('path','')
+        folder = self.request.GET.get('path','')
         folder_contents = get_files_from_server(folder)
         parent_folder = folder_contents["files"]["parent"]
         folders = _get_folders(parent_folder)
@@ -89,11 +89,13 @@ def update_file(request):
     return JsonResponse(content)
 
 def get_files_from_server(folder):
-	args = {"path": folder}
-	url = "%s?%s" % (settings.FILE_SERVER_URLS['CONTENTS'], urllib.urlencode(args))
+    args = {"path": folder}
+    url = "%s?%s" % (settings.FILE_SERVER_URLS['CONTENTS'], urllib.urlencode(args))
 
-	response = requests.get(url)
-	return response.json()
+    print url
+
+    response = requests.get(url)
+    return response.json()
 
 def _get_folders(full_path):
     folders = full_path.lstrip("/").split("/") if full_path else []

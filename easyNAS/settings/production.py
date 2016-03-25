@@ -1,7 +1,7 @@
 from common import *
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 # Database
 # https://docs.djangoproject.com/en/dev/ref/settings/#databases
@@ -18,4 +18,14 @@ DATABASES = {
 }
 
 FILE_SERVER_BASE_URL = "http://71.57.23.72:5000/nas_server/api/v1.0"
+
+FILE_SERVER_URLS = {
+    'BASE_DIR': "%s/directory/root" % FILE_SERVER_BASE_URL,
+    'FILES': "%s/files" % FILE_SERVER_BASE_URL,
+    'CONTENTS': "%s/directory" % FILE_SERVER_BASE_URL,
+    'DELETES': "%s/files/deletes" % FILE_SERVER_BASE_URL,
+    'CREATE': "%s/directory/create" % FILE_SERVER_BASE_URL,
+    'DOWNLOADS': "%s/files/downloads" % FILE_SERVER_BASE_URL,
+
+}
 

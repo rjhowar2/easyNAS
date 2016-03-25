@@ -30,7 +30,7 @@ class LoginView(TemplateView):
         context = super(TemplateView, self).get_context_data(**kwargs)
 
         if "error_code" in kwargs:
-            context["error_message="] = LOGIN_ERRORS[kwargs["error_code"]]
+            context["error_message"] = LOGIN_ERRORS[kwargs["error_code"]]
 
         return context
 
