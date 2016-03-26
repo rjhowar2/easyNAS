@@ -83,7 +83,7 @@ def update_file(request):
     source = request.POST.get("source")
     dest = request.POST.get("destination")
 
-    r = requests.put(update_url, data={'source': source, 'destination': dest})
+    r = requests.put(update_url, json={'source': source, 'destination': dest})
     content = r.json()
 
     return JsonResponse(content)
@@ -91,8 +91,6 @@ def update_file(request):
 def get_files_from_server(folder):
     args = {"path": folder}
     url = "%s?%s" % (settings.FILE_SERVER_URLS['CONTENTS'], urllib.urlencode(args))
-
-    print url
 
     response = requests.get(url)
     return response.json()

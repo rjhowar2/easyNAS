@@ -125,7 +125,7 @@
       <div class="modal-body">
         <div class="alert alert-success" style="display: none;"></div>
         <div class="alert alert-danger" style="display: none;"></div>
-        <form class="horizontal-form">
+        <form  action="{% url 'update_file' %}" class="horizontal-form">
           {% csrf_token %}
           <input type="hidden" name="source" />
           <div class="form-group">
