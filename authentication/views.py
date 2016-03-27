@@ -36,7 +36,7 @@ class LoginView(TemplateView):
 
 def logout_view(request):
     logout(request)
-    # Redirect to a success page.
+    return HttpResponseRedirect(reverse('login_screen'))
 
 LOGIN_ERRORS = {
     200: "This accounthas been disabled. Please contact the administrator.",

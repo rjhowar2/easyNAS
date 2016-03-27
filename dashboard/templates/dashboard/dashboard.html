@@ -7,45 +7,54 @@
 {% endblock %}
 
 {% block content %}
-<div id="dashboard_container">
-	<ol class="breadcrumb">
-		<li><a href='{% url "dashboard_home" %}' data-toggle="tooltip" title="All Files" class="glyphicon glyphicon-folder-open"></a></li>
-		{% for path, folder in folders %}
-			{% if not forloop.last %}
-				<li><a href='{% url "dashboard_home" %}?path={{ path|urlencode }}'>{{folder}}</a></li>
-			{% else %}
-				<li><b>{{ folder }}</b></li>
-			{% endif %}
-		{% endfor %}
-	</ol>
-	<div id="dashboard_menu">
-		<button id="btn_upload" type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#upload_modal">
-  		<span class="glyphicon glyphicon-cloud-upload"></span> Upload
-		</button>
-		<button disabled="disabled" id="btn_download" type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#download_modal">
-  		<span class="glyphicon glyphicon-cloud-download"></span> Download
-		</button>
-    <button id="btn_delete" disabled="disabled" type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#delete_modal">
-      <span class="glyphicon glyphicon-trash"></span> Delete
-    </button>
-		<button id="btn_new" type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#new_folder_modal">
-  		<span class="glyphicon glyphicon-plus"></span> New
-		</button>
-		<button disabled="disabled" id="btn_edit" type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#edit_modal">
-  		<span class="glyphicon glyphicon-edit" data-toggle="tooltip" title="Click to edit"></span>
-		</button>
-	</div>
-  <div id="folder_contents">
-  {% include "dashboard/folder_contents.html" %}
+{% if not error %}
+  <div id="dashboard_container">
+    <ol class="breadcrumb">
+      <li><a href='{% url "dashboard_home" %}' data-toggle="tooltip" title="All Files" class="glyphicon glyphicon-folder-open"></a></li>
+      {% for path, folder in folders %}
+        {% if not forloop.last %}
+          <li><a href='{% url "dashboard_home" %}?path={{ path|urlencode }}'>{{folder}}</a></li>
+        {% else %}
+          <li><b>{{ folder }}</b></li>
+        {% endif %}
+      {% endfor %}
+    </ol>
+    <div id="dashboard_menu">
+      <button id="btn_upload" type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#upload_modal">
+        <span class="glyphicon glyphicon-cloud-upload"></span> Upload
+      </button>
+      <button disabled="disabled" id="btn_download" type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#download_modal">
+        <span class="glyphicon glyphicon-cloud-download"></span> Download
+      </button>
+      <button id="btn_delete" disabled="disabled" type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#delete_modal">
+        <span class="glyphicon glyphicon-trash"></span> Delete
+      </button>
+      <button id="btn_new" type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#new_folder_modal">
+        <span class="glyphicon glyphicon-plus" data-toggle="tooltip" title="Create new folder"></span>
+      </button>
+      <button disabled="disabled" id="btn_edit" type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#edit_modal">
+        <span class="glyphicon glyphicon-edit" data-toggle="tooltip" title="Click to edit"></span>
+      </button>
+    </div>
+    <div id="folder_contents">
+    {% include "dashboard/folder_contents.html" %}
+    </div>
+    {% include "dashboard/dashboard_modals.html" %}
   </div>
-  {% include "dashboard/dashboard_modals.html" %}
-</div>
+{% else %}
+  <div class="error-template">
+    <h1>Oops!</h1>
+    <div class="error-details">
+      Unable to connect to the external file server!
+    </div>
+  </div>
+{% endif %}
 
 {% endblock %}
 
 {% block extra_js %}
 <script type="text/javascript">
-	var folder_contents_url = '{% url "folder_contents" %}?path={{ parent|urlencode }}'
+  var folder_contents_url = '{% url "folder_contents" %}?path={{ parent|urlencode }}'
 </script>
 <script type="text/javascript" src="{% static 'dashboard/js/dashboard.js' %}"></script>
 {% endblock %}

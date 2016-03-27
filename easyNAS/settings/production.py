@@ -3,9 +3,6 @@ from common import *
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-# Database
-# https://docs.djangoproject.com/en/dev/ref/settings/#databases
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
@@ -26,6 +23,5 @@ FILE_SERVER_URLS = {
     'DELETES': "%s/files/deletes" % FILE_SERVER_BASE_URL,
     'CREATE': "%s/directory/create" % FILE_SERVER_BASE_URL,
     'DOWNLOADS': "%s/files/downloads" % FILE_SERVER_BASE_URL,
-
 }
 

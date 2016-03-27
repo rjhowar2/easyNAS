@@ -16,13 +16,20 @@ class DashboardView(TemplateView):
             return ["dashboard/dashboard.html"]
 
     def get_context_data(self, **kwargs):
+        context = super(TemplateView, self).get_context_data(**kwargs)
+
         folder = self.request.GET.get('path','')
-        folder_contents = get_files_from_server(folder)
+
+        try:
+            folder_contents = get_files_from_server(folder)
+        except:
+            context['error'] = True
+            return context
+
         parent_folder = folder_contents["files"]["parent"]
         folders = _get_folders(parent_folder)
 
-        context = super(TemplateView, self).get_context_data(**kwargs)
-        context['folder_contents'] = get_files_from_server(folder)
+        context['folder_contents'] = folder_contents
         context['folders'] = folders
         context['parent'] = parent_folder
         
@@ -43,12 +50,14 @@ def download_file(request):
     download_url = settings.FILE_SERVER_URLS["DOWNLOADS"]
 
     folder = request.POST.get("folder")
-    filename = request.POST.getlist("filename")
+    files = request.POST.getlist("filename")
 
-    r = requests.post(download_url, data={'folder': folder, 'filename': filename}, stream=True)
+    filename = "download.zip" if len(files) > 1 else files[0]
+
+    r = requests.post(download_url, data={'folder': folder, 'filename': files}, stream=True)
     if r.status_code == 200:
-        response = HttpResponse(FileWrapper(r.raw), content_type='application/zip')
-        response['Content-Disposition'] = 'attachment; filename=myfile.zip'
+        response = HttpResponse(FileWrapper(r.raw))
+        response['Content-Disposition'] = 'attachment; filename=%s' % filename
     else:
         response = HttpResponse("Sorry an error occured processing your request")
         response.status_code = 400
