@@ -14,7 +14,7 @@ DATABASES = {
     }
 }
 
-FILE_SERVER_BASE_URL = "http://71.57.23.72:5000/nas_server/api/v1.0"
+# FILE_SERVER_BASE_URL = ""
 
 FILE_SERVER_URLS = {
     'BASE_DIR': "%s/directory/root" % FILE_SERVER_BASE_URL,
@@ -24,4 +24,3 @@ FILE_SERVER_URLS = {
     'CREATE': "%s/directory/create" % FILE_SERVER_BASE_URL,
     'DOWNLOADS': "%s/files/downloads" % FILE_SERVER_BASE_URL,
 }
-
