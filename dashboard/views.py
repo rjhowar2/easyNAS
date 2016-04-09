@@ -1,6 +1,7 @@
-from django.http import HttpResponse, JsonResponse
+from django.http import HttpResponse, JsonResponse, HttpResponseRedirect
 from django.views.generic import TemplateView
 from django.core.servers.basehttp import FileWrapper
+from django.core.urlresolvers import reverse
 from django.conf import settings
 
 import requests
@@ -59,8 +60,7 @@ def download_file(request):
         response = HttpResponse(FileWrapper(r.raw))
         response['Content-Disposition'] = 'attachment; filename=%s' % filename
     else:
-        response = HttpResponse("Sorry an error occured processing your request")
-        response.status_code = 400
+        response = HttpResponseRedirect(reverse('dashboard_error'))
     
     return response
 

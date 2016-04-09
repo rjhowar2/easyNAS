@@ -14,11 +14,17 @@ $(document).ready(function(){
         toggle_button_state();
     });
 
-    $(".modal-footer button").on("click", function(){
-        $modal = $(this).parents(".modal");
-        reset_modal($modal);
+    $(".modal-footer button, .modal-header .close").on("click", function(){
+        // TODO: this is not a complete solution, needs to happen whenever a modal closes,
+        // missing click away
         toggle_button_state();
     })
+
+    $("#dashboard_menu button").on("click", function(){
+        var $modal = $($(this).data("target"))
+        reset_modal($modal)
+        toggle_button_state();
+    });
 
     $("#btn_delete").on("click", function(){
         add_selected($("#delete_modal .alert-warning ul"));
@@ -138,8 +144,17 @@ function modal_ajax($modal, form_data){
 
 function operation_complete(data, $modal){
     $modal.find("input[type=submit]").attr("disabled", true);
-    var $modal_alert = $modal.find(".alert-success");
-    var message = data["action"] + ": " + data["path"];
+    
+    if (data["error"] == undefined) {
+        var message = data["action"] + ": " + data["path"];
+        var $modal_alert = $modal.find(".alert-success");
+    
+    } else {
+        var message = "Operation failed: " + data["error"]["message"]
+        var $modal_alert = $modal.find(".alert-danger");
+    
+    }
+
     $modal_alert.text(message);
 
     //hide other alerts
